@@ -1,19 +1,21 @@
 <template>
-    <div class="wrapper">
-        <el-form :model="registerForm" ref="registerForm" :rules="rules" label-width="200px">
-            <el-form-item label="请输入用户名：" prop="Name">
+    <div class="title">
+      <h2>欢迎注册</h2>
+      <div class="wrapper">
+        <el-form :model="registerForm" ref="registerForm" :rules="rules" label-width="140px">
+            <el-form-item label="请输入用户名：" prop="name">
                 <el-input v-model="registerForm.name"></el-input>
             </el-form-item>
-            <el-form-item label="请输入密码：" prop="Password">
-                <el-input type="password" v-model="registerForm.passward"></el-input>
+            <el-form-item label="请输入密码：" prop="password">
+                <el-input type="password" v-model="registerForm.password"></el-input>
             </el-form-item>
-            <el-form-item label="请再次输入密码：">
-                <el-input type="password" v-model="registerForm.checkPass"></el-input>
+            <el-form-item label="请再次输入密码：" prop="checkPasswd">
+                <el-input type="password" v-model="registerForm.checkPasswd"></el-input>
             </el-form-item>
-            <el-form-item label="请输入邮箱地址：" prop="Email">
+            <el-form-item label="请输入邮箱地址：" prop="email">
                 <el-input type="email" v-model="registerForm.email"></el-input>
             </el-form-item>
-            <el-form-item label="请输入电话号码：" prop="PhoneNum">
+            <el-form-item label="请输入电话号码：" prop="phoneNum">
                 <el-input type="tel" v-model="registerForm.phoneNum"></el-input>
             </el-form-item>
             <el-form-item>
@@ -21,15 +23,16 @@
                 <el-button type="default" @click="reset('registerForm')">重置</el-button>
             </el-form-item>
         </el-form>
+      </div>
     </div>
 </template>
 <script lang='ts'>
-import {Vue, Component} from 'vue-property-decorator'
+import { Vue, Component } from 'vue-property-decorator'
 
 @Component
 export default class UserRegister extends Vue{
 
-  validateName = (rule: any, value: string, callback: any) => {
+  private validateName = (rule: any, value: string, callback: any) => {
   if (value === ''){
     callback(new Error('用户名不能为空！'));
   }else{
@@ -37,15 +40,28 @@ export default class UserRegister extends Vue{
   }
 };
 
-  validatePasswd = (rule: any, value: string, callback: any) => {
+  private validatePasswd = (rule: any, value: string, callback: any) => {
   if (value === ''){
-  return callback(new Error('密码不能为空！'));
+    callback(new Error('密码不能为空！'));
+  }else{
+     if (this.registerForm.checkPasswd !== '') {
+            (this.$refs.registerForm as HTMLFormElement).validateField('checkPasswd');
+          }
+    callback();
+  }
+};
+private validateCheckPasswd = (rule: any, value: string, callback: any) => {
+  let passwd = this.registerForm.password;
+  if (value === ''){
+    callback(new Error('密码不能为空！'));
+  }else if(value !== passwd){
+    callback(new Error('两次输入的密码不一致！'));
   }else{
     callback();
   }
 };
 
-  validateEmail = (rule: any, value: string, callback: any) => {
+  private validateEmail = (rule: any, value: string, callback: any) => {
   let isEmail: boolean = false;
   const emailReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
   isEmail = emailReg.test(value);
@@ -58,7 +74,7 @@ export default class UserRegister extends Vue{
   callback();
 };
 
-  validatePhone = (rule:any, value: string, callback: any) => {
+  private validatePhone = (rule:any, value: string, callback: any) => {
   let isTel: boolean = false;
   const telReg = /^[1][3,4,5,7,8][0-9]{9}$/;
   isTel = telReg.test(value);
@@ -74,13 +90,15 @@ export default class UserRegister extends Vue{
 registerForm = {
     name: '',
     password: '',
+    checkPasswd:'',
     email: '',
     phoneNum: ''
   };
 
 rules = {
-    name:[{validator: this.validateName, trigger: 'blur'}],
-    password:[{validator: this.validatePasswd, trigger: 'blur'}],
+    name:[{required: true, validator: this.validateName, trigger: 'blur'}],
+    password:[{required: true, validator: this.validatePasswd, trigger: 'blur'}],
+    checkPasswd:[{required: true, validator: this.validateCheckPasswd,trigger: 'change'}],
     email:[{validator: this.validateEmail, trigger: 'blur'}],
     phoneNum:[{validator: this.validatePhone, trigger: 'blur'}],
   };
@@ -99,22 +117,24 @@ rules = {
     (this.$refs[formName] as HTMLFormElement).resetFields();
   };
 
-mounted(rule: any, value: string, callback: any) {
-  let passwd = this.registerForm.password;
-  if (value === ''){
-    return callback(new Error('密码不能为空！'));
-  }else if(value !== passwd){
-    return callback(new Error('两次输入的密码不一致！'));
-  }else{
-    callback();
-  }
-};
+  mounted(){
+    this.validatePasswd;
+    this.validateCheckPasswd;
+  };
 }
 </script>
 <style lang="stylus" scoped>
+.title{
+  position relative
+  top 100px
+}
 .wrapper{
   display flex
   justify-content center
-  align-items center
+}
+h2{
+  position relative
+  left 550px
+  font-size 50px
 }
 </style>

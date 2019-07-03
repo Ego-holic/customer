@@ -2,7 +2,11 @@
     <div class="title">
       <h2>欢迎注册</h2>
       <div class="wrapper">
-        <el-form :model="registerForm" ref="registerForm" :rules="rules" label-width="140px">
+        <el-form 
+        :model="registerForm"
+        ref="registerForm"
+        :rules="rules"
+        label-width="140px">
             <el-form-item label="请输入用户名：" prop="name">
                 <el-input v-model="registerForm.name"></el-input>
             </el-form-item>
@@ -30,7 +34,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 
 @Component
-export default class UserRegister extends Vue{
+export class UserAdd extends Vue{
 
   private validateName = (rule: any, value: string, callback: any) => {
   if (value === ''){
@@ -99,7 +103,7 @@ rules = {
     name:[{required: true, validator: this.validateName, trigger: 'blur'}],
     password:[{required: true, validator: this.validatePasswd, trigger: 'blur'}],
     checkPasswd:[{required: true, validator: this.validateCheckPasswd,trigger: 'change'}],
-    email:[{validator: this.validateEmail, trigger: 'blur'}],
+    email:[{required: true, validator: this.validateEmail, trigger: 'blur'}],
     phoneNum:[{validator: this.validatePhone, trigger: 'blur'}],
   };
   sumbit = (formName: string) => {

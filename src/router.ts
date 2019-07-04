@@ -4,14 +4,14 @@ import Router from 'vue-router';
 Vue.use(Router);
 
 export default new Router({
-  mode: 'hash',
+  mode: 'history',
   base: process.env.BASE_URL,
   routes: [
-    // {
-    //   path: '/useradd',
-    //   name: 'useradd',
-    //   component: () => import('@/views/UserAdd.vue'),
-    // },
+    {
+      path: '/useradd',
+      name: 'useradd',
+      component: () => import('@/components/UserAdd.vue'),
+    },
     {
       path: '/users',
       name: 'users',

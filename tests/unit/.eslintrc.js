@@ -4,7 +4,7 @@ module.exports = {
     node: true,
   },
   globals: {
-    BASE_URL: false ,
+    BASE_URL: false,
   },
   extends: [
     'plugin:vue/essential',

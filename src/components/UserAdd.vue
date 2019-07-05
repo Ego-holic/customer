@@ -37,23 +37,24 @@ import axios from 'axios';
 
 @Component
 export default class UserAdd extends Vue {
-  getUsersArr =[];
+  getChooseUsersNameArr = [];
+  getChooseUsersEmailArr = [];
 
   getUserDataName(val: string) {
     axios.get('http://localhost:3000/users?name=val')
       .then((Response) => {
-        this.getUsersArr = Response.data;
+        this.getChooseUsersNameArr = Response.data;
       });
   }
 
   getUserDataEmail(val: string) {
     axios.get('http://localhost:3000/users?email=val')
       .then((Response) => {
-        this.getUsersArr = Response.data;
+        this.getChooseUsersEmailArr = Response.data;
       });
   }
 
-  validateName = (rule: any, value: string, callback: any) => {
+  validateName(rule: any, value: string, callback: any) {
     let isName: boolean = false;
     const nameReg = /^[a-zA-Z0-9_]{1,50}$/;
     isName = nameReg.test(value);
@@ -62,16 +63,16 @@ export default class UserAdd extends Vue {
     } else if (!isName) {
       callback(new Error('只允许大小写字母、数字、下划线！'));
     } else {
-      this.getUserDataName(value);
-      if (this.getUsersArr !== null) {
+      console.log(this.getUserDataName(value));
+      if (this.getChooseUsersNameArr) {
         callback(new Error('此用户名已经存在！'));
       } else {
         callback();
       }
     }
-  };
+  }
 
-  validatePasswd = (rule: any, value: string, callback: any) => {
+  validatePasswd(rule: any, value: string, callback: any) {
     if (value === '') {
       callback(new Error('密码不能为空！'));
     } else if (value.length <= 5) {
@@ -82,9 +83,9 @@ export default class UserAdd extends Vue {
       }
       callback();
     }
-  };
+  }
 
-  validateCheckPasswd = (rule: any, value: string, callback: any) => {
+  validateCheckPasswd(rule: any, value: string, callback: any) {
     const passwd = this.registerForm.password;
     if (value === '') {
       callback(new Error('密码不能为空！'));
@@ -93,9 +94,9 @@ export default class UserAdd extends Vue {
     } else {
       callback();
     }
-  };
+  }
 
-  validateEmail = (rule: any, value: string, callback: any) => {
+  validateEmail(rule: any, value: string, callback: any) {
     let isEmail: boolean = false;
     const emailReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
     isEmail = emailReg.test(value);
@@ -104,15 +105,15 @@ export default class UserAdd extends Vue {
       callback(new Error('请检查输入的邮箱是否合法!'));
     } else {
       this.getUserDataEmail(value);
-      if (this.getUsersArr !== null) {
+      if (this.getChooseUsersEmailArr !== null) {
         callback(new Error('此邮箱已被使用！'));
       }
     }
     isEmail = true;
     callback();
-  };
+  }
 
-  validatePhone = (rule:any, value: string, callback: any) => {
+  validatePhone(rule:any, value: string, callback: any) {
     let isTel: boolean = false;
     const telReg = /^[1][3,4,5,7,8][0-9]{9}$/;
     isTel = telReg.test(value);
@@ -122,7 +123,7 @@ export default class UserAdd extends Vue {
     }
     isTel = true;
     callback();
-  };
+  }
 
 registerForm = {
   name: '',
@@ -142,48 +143,48 @@ rules = {
 
 // put = () => false
 
-  sumbit = (formName: string, e: any) => {
-    (this.$refs[formName] as HTMLFormElement).validate((vail: boolean) => {
-      if (vail) {
-        const sumbitForm = {
-          name: this.registerForm.name,
-          password: this.registerForm.password,
-          email: this.registerForm.email,
-          phoneNum: this.registerForm.phoneNum,
-        };
-        axios.post('http://localhost:3000/users', sumbitForm)
-          .then((response) => {
+sumbit(formName: string, e: any) {
+  (this.$refs[formName] as HTMLFormElement).validate((vail: boolean) => {
+    if (vail) {
+      const sumbitForm = {
+        name: this.registerForm.name,
+        password: this.registerForm.password,
+        email: this.registerForm.email,
+        phoneNum: this.registerForm.phoneNum,
+      };
+      axios.post('http://localhost:3000/users', sumbitForm)
+        .then((response) => {
           // console.log(response);
-            this.$message({
-              type: 'success',
-              message: '新增用户成功！',
-            });
-            setTimeout(() => {
-              this.back();
-            }, 100);
-            e.preventDefault();
+          this.$message({
+            type: 'success',
+            message: '新增用户成功！',
           });
-      } else {
-        this.$alert('提交失败，请检查信息是否正确！', 'Error!', {
-          confirmButtonText: '确定',
-          callback: actions => false,
+          setTimeout(() => {
+            this.back();
+          }, 100);
+          e.preventDefault();
         });
-      }
-    });
-    e.preventDefault();
-  };
+    } else {
+      this.$alert('提交失败，请检查信息是否正确！', 'Error!', {
+        confirmButtonText: '确定',
+        callback: actions => false,
+      });
+    }
+  });
+  e.preventDefault();
+}
 
-  reset = (formName: string) => {
-    (this.$refs[formName] as HTMLFormElement).resetFields();
-  };
+reset(formName: string) {
+  (this.$refs[formName] as HTMLFormElement).resetFields();
+}
 
-  back() {
-    this.$router.push({ path: '/users' });
-  }
+back() {
+  this.$router.push({ path: '/users' });
+}
 
-  mounted() {
-    this.reset('registerForm');
-  }
+mounted() {
+  this.reset('registerForm');
+}
 }
 </script>
 <style lang="stylus" scoped>

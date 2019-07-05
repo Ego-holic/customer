@@ -31,14 +31,14 @@
                 <el-button
                     size="mini"
                     type="primary"
-                    @click="assignRole()">分配角色</el-button>
+                    @click="assignRoles()">分配角色</el-button>
                 <el-button
                     size="mini"
                     type="success"
                     @click="editUser()">编辑</el-button>
                 <el-button
                     size="mini"
-                    @click="removeUser()">删除</el-button>
+                    @click="deleteUser(this.props.row.id)">删除</el-button>
                 </template>
             </el-table-column>
           </el-table>
@@ -55,10 +55,9 @@
                   <el-pagination
                     layout="prev, pager, next, jumper"
                     :total="total"
-                    current-page="1"
-                    page-size= [10,20,40,50,100]
-                    @current-change="handleCurrentChange"
-                    @size-change="handleSizeChange">
+                    :current-page.sync="currentPage"
+                    :page-size= "pageSize"
+                    @current-change="handleCurrentChange">
                   </el-pagination>
               </el-col>
           </el-row>
@@ -73,11 +72,13 @@ import axios from 'axios';
 export default class UserForm extends Vue {
     userData = [];
 
+    totalData = [];
+
     total = 0;
 
     currentPage = 1;
 
-    sizePage = 10;
+    pageSize = 10;
 
     addUser() {
       this.$router.push({ path: '/useradd' });
@@ -85,22 +86,51 @@ export default class UserForm extends Vue {
 
     userList() {
       axios.get('http://localhost:3000/users')
-        .then(this.getUsersData);
+        .then((response) => {
+          this.getUsersData(response);
+        });
     }
 
     getUsersData(response: any) {
-      const arg = response.data;
-      this.userData = arg;
-      this.total = arg.length;
+      const request = response.data;
+      this.totalData = request;
+      const argCurrent = this.currentPage;
+      const argSize = this.pageSize;
+      this.userData = request.slice((argCurrent - 1) * argSize, argCurrent * argSize);
+      this.total = request.length;
     }
 
-    // handleCurrentChange=(val: number) => {
-    //   this.currentPage = val;
-    // }
+    handleCurrentChange(val: number) {
+      this.currentPage = val;
+      const argCurrent = this.currentPage;
+      const argSize = this.pageSize;
+      this.userData = this.totalData.slice((argCurrent - 1) * argSize, argCurrent * argSize);
+    }
 
-    // handleSizeChange=(val: number) => {
-    //   this.sizePage = val;
-    // }
+    delUserInfo(){
+        const id = this.getUsersData(this.$route.params.id)
+        console.log(id);
+    }
+
+    deleteUser(id: string){
+        console.log(id);
+    //    this.$confirm('确认要删除该用户吗?', {
+    //       confirmButtonText: '确定',
+    //       cancelButtonText: '取消',
+    //       type: 'warning'
+    //     }).then(() => {
+    //       this.delUserInfo(id);
+    //       this.$message({
+    //         type: 'success',
+    //         message: '删除成功!'
+    //       });
+    //     }).catch(() => {
+    //       this.$message({
+    //         type: 'info',
+    //         message: '已取消删除'
+    //       });          
+    //     });
+    }
 
     created() {
       this.userList();

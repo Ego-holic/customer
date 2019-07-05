@@ -11,7 +11,7 @@
                 <el-input v-model="registerForm.name"></el-input>
             </el-form-item>
             <el-form-item label="请输入密码：" prop="password">
-                <el-input type="password" v-model="registerForm.password"></el-input>
+                <el-input type="password" minlength="6" v-model="registerForm.password"></el-input>
             </el-form-item>
             <el-form-item label="请再次输入密码：" prop="checkPasswd">
                 <el-input type="password" v-model="registerForm.checkPasswd"></el-input>
@@ -37,17 +37,45 @@ import axios from 'axios';
 
 @Component
 export default class UserAdd extends Vue {
+  getUsersArr =[];
+
+  getUserDataName(val: string) {
+    axios.get('http://localhost:3000/users?name=val')
+      .then((Response) => {
+        this.getUsersArr = Response.data;
+      });
+  }
+
+  getUserDataEmail(val: string) {
+    axios.get('http://localhost:3000/users?email=val')
+      .then((Response) => {
+        this.getUsersArr = Response.data;
+      });
+  }
+
   validateName = (rule: any, value: string, callback: any) => {
+    let isName: boolean = false;
+    const nameReg = /^[a-zA-Z0-9_]{1,50}$/;
+    isName = nameReg.test(value);
     if (value === '') {
       callback(new Error('用户名不能为空！'));
+    } else if (!isName) {
+      callback(new Error('只允许大小写字母、数字、下划线！'));
     } else {
-      callback();
+      this.getUserDataName(value);
+      if (this.getUsersArr !== null) {
+        callback(new Error('此用户名已经存在！'));
+      } else {
+        callback();
+      }
     }
   };
 
   validatePasswd = (rule: any, value: string, callback: any) => {
     if (value === '') {
       callback(new Error('密码不能为空！'));
+    } else if (value.length <= 5) {
+      callback(new Error('密码长度不小于6位！'));
     } else {
       if (this.registerForm.checkPasswd !== '') {
         (this.$refs.registerForm as HTMLFormElement).validateField('checkPasswd');
@@ -74,9 +102,13 @@ export default class UserAdd extends Vue {
     if (!isEmail) {
       isEmail = false;
       callback(new Error('请检查输入的邮箱是否合法!'));
+    } else {
+      this.getUserDataEmail(value);
+      if (this.getUsersArr !== null) {
+        callback(new Error('此邮箱已被使用！'));
+      }
     }
     isEmail = true;
-
     callback();
   };
 
@@ -84,7 +116,7 @@ export default class UserAdd extends Vue {
     let isTel: boolean = false;
     const telReg = /^[1][3,4,5,7,8][0-9]{9}$/;
     isTel = telReg.test(value);
-    if (!isTel) {
+    if (!isTel && value !== '') {
       isTel = false;
       callback(new Error('请检查输入的手机号码是否合法!'));
     }

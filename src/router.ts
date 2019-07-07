@@ -17,5 +17,10 @@ export default new Router({
       name: 'users',
       component: () => import('@/views/UserForm.vue'),
     },
+    {
+      path: '/useredit/:id',
+      name: 'useredit',
+      component: () => import('@/views/UserInfoEdit.vue'),
+    },
   ],
 });

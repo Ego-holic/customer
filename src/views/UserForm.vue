@@ -5,7 +5,8 @@
           <el-table
             :data="userData"
             border
-            size="medium">
+            size="medium"
+            :row-key="totalData.id">
             <el-table-column
                 prop="id"
                 label="ID"
@@ -27,7 +28,7 @@
                 width="250">
             </el-table-column>
             <el-table-column label="操作">
-                <template>
+                <template slot-scope="scope">
                 <el-button
                     size="mini"
                     type="primary"
@@ -35,10 +36,10 @@
                 <el-button
                     size="mini"
                     type="success"
-                    @click="editUser()">编辑</el-button>
+                    @click="editUser(scope.row.id)">编辑</el-button>
                 <el-button
                     size="mini"
-                    @click="deleteUser(this.props.row.id)">删除</el-button>
+                    @click="deleteUser(scope.row.id)">删除</el-button>
                 </template>
             </el-table-column>
           </el-table>
@@ -84,6 +85,10 @@ export default class UserForm extends Vue {
       this.$router.push({ path: '/useradd' });
     }
 
+    editUser(val :string ) {
+      this.$router.push({ path: '/useredit/:val' });
+    }
+
     userList() {
       axios.get('http://localhost:3000/users')
         .then((response) => {
@@ -107,29 +112,31 @@ export default class UserForm extends Vue {
       this.userData = this.totalData.slice((argCurrent - 1) * argSize, argCurrent * argSize);
     }
 
-    delUserInfo(){
-        const id = this.getUsersData(this.$route.params.id)
-        console.log(id);
+    delUserInfo(val: string) {
+      axios.delete(`http://localhost:3000/users/${val}`).then(
+        (response) => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!',
+          });
+        },
+      );
     }
 
-    deleteUser(id: string){
-        console.log(id);
-    //    this.$confirm('确认要删除该用户吗?', {
-    //       confirmButtonText: '确定',
-    //       cancelButtonText: '取消',
-    //       type: 'warning'
-    //     }).then(() => {
-    //       this.delUserInfo(id);
-    //       this.$message({
-    //         type: 'success',
-    //         message: '删除成功!'
-    //       });
-    //     }).catch(() => {
-    //       this.$message({
-    //         type: 'info',
-    //         message: '已取消删除'
-    //       });          
-    //     });
+    deleteUser(val: string) {
+      this.$confirm('确认要删除该用户吗?', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        this.delUserInfo(val);
+        window.location.reload();
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除',
+        });
+      });
     }
 
     created() {

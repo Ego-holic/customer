@@ -38,21 +38,22 @@ import axios from 'axios';
 @Component
 export default class UserAdd extends Vue {
   getChooseUsersNameArr = [];
+
   getChooseUsersEmailArr = [];
 
-  getUserDataName(val: string) {
-    axios.get('http://localhost:3000/users?name=val')
-      .then((Response) => {
-        this.getChooseUsersNameArr = Response.data;
-      });
-  }
+  // getUserDataName(val: string) {
+  //   axios.get('http://localhost:3000/users?name=val')
+  //     .then((Response) => {
+  //       this.getChooseUsersNameArr = Response.data;
+  //     });
+  // }
 
-  getUserDataEmail(val: string) {
-    axios.get('http://localhost:3000/users?email=val')
-      .then((Response) => {
-        this.getChooseUsersEmailArr = Response.data;
-      });
-  }
+  // getUserDataEmail(val: string) {
+  //   axios.get('http://localhost:3000/users?email=val')
+  //     .then((Response) => {
+  //       this.getChooseUsersEmailArr = Response.data;
+  //     });
+  // }
 
   validateName(rule: any, value: string, callback: any) {
     let isName: boolean = false;
@@ -63,12 +64,12 @@ export default class UserAdd extends Vue {
     } else if (!isName) {
       callback(new Error('只允许大小写字母、数字、下划线！'));
     } else {
-      console.log(this.getUserDataName(value));
-      if (this.getChooseUsersNameArr) {
-        callback(new Error('此用户名已经存在！'));
-      } else {
-        callback();
-      }
+    //   console.log(this.getUserDataName(value));
+    //   if (this.getChooseUsersNameArr) {
+    //     callback(new Error('此用户名已经存在！'));
+    //   } else {
+      callback();
+      // }
     }
   }
 
@@ -104,10 +105,10 @@ export default class UserAdd extends Vue {
       isEmail = false;
       callback(new Error('请检查输入的邮箱是否合法!'));
     } else {
-      this.getUserDataEmail(value);
-      if (this.getChooseUsersEmailArr !== null) {
-        callback(new Error('此邮箱已被使用！'));
-      }
+    //   this.getUserDataEmail(value);
+    //   if (this.getChooseUsersEmailArr !== null) {
+    //     callback(new Error('此邮箱已被使用！'));
+    //   }
     }
     isEmail = true;
     callback();

@@ -137,12 +137,10 @@ registerForm = {
 rules = {
   name: [{ required: true, validator: this.validateName, trigger: 'blur' }],
   password: [{ required: true, validator: this.validatePasswd, trigger: 'blur' }],
-  checkPasswd: [{ required: true, validator: this.validateCheckPasswd, trigger: 'change' }],
+  checkPasswd: [{ required: true, validator: this.validateCheckPasswd, trigger: 'blur' }],
   email: [{ required: true, validator: this.validateEmail, trigger: 'blur' }],
   phoneNum: [{ validator: this.validatePhone, trigger: 'blur' }],
 };
-
-// put = () => false
 
 sumbit(formName: string, e: any) {
   (this.$refs[formName] as HTMLFormElement).validate((vail: boolean) => {

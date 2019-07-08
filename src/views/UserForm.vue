@@ -6,7 +6,7 @@
             :data="userData"
             border
             size="medium"
-            :row-key="totalData.id">
+            :row-key="userData.id">
             <el-table-column
                 prop="id"
                 label="ID"
@@ -54,6 +54,7 @@
               </el-col>
               <el-col :span="6" :offset="7">
                   <el-pagination
+                    background
                     layout="prev, pager, next, jumper"
                     :total="total"
                     :current-page.sync="currentPage"
@@ -85,8 +86,9 @@ export default class UserForm extends Vue {
       this.$router.push({ path: '/useradd' });
     }
 
-    editUser(val :string ) {
-      this.$router.push({ path: '/useredit/:val' });
+    editUser(val :string) {
+      // console.log(this.$router)
+      this.$router.push({ name: 'useredit', params: { id: val } });
     }
 
     userList() {

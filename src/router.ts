@@ -10,17 +10,22 @@ export default new Router({
     {
       path: '/useradd',
       name: 'useradd',
-      component: () => import('@/components/UserAdd.vue'),
+      component: () => import('@/views/users/UserAdd.vue'),
     },
     {
       path: '/users',
       name: 'users',
-      component: () => import('@/views/UserForm.vue'),
+      component: () => import('@/views/users/UserForm.vue'),
     },
     {
       path: '/useredit/:id',
       name: 'useredit',
-      component: () => import('@/views/UserInfoEdit.vue'),
+      component: () => import('@/views/users/UserInfoEdit.vue'),
     },
+    // {
+    //   path: '/changepassword',
+    //   name:'changepassword/:id',
+    //   component: () => import('@/views/users/UserChangePassword.vue')
+    // }
   ],
 });

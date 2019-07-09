@@ -11,7 +11,7 @@
                 <el-input v-model="registerForm.name"></el-input>
             </el-form-item>
             <el-form-item label="请输入密码：" prop="password">
-                <el-input type="password" minlength="6" v-model="registerForm.password"></el-input>
+                <el-input type="password" v-model="registerForm.password"></el-input>
             </el-form-item>
             <el-form-item label="请再次输入密码：" prop="checkPasswd">
                 <el-input type="password" v-model="registerForm.checkPasswd"></el-input>
@@ -20,7 +20,7 @@
                 <el-input type="email" v-model="registerForm.email"></el-input>
             </el-form-item>
             <el-form-item label="请输入电话号码：" prop="phoneNum">
-                <el-input type="tel" v-model="registerForm.phoneNum"></el-input>
+                <el-input type="tel" maxlength="11" v-model="registerForm.phoneNum"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="sumbit('registerForm')">提交</el-button>
@@ -37,9 +37,9 @@ import axios from 'axios';
 
 @Component
 export default class UserAdd extends Vue {
-  getChooseUsersNameArr = [];
+  // getChooseUsersNameArr = [];
 
-  getChooseUsersEmailArr = [];
+  // getChooseUsersEmailArr = [];
 
   // getUserDataName(val: string) {
   //   axios.get('http://localhost:3000/users?name=val')
@@ -142,7 +142,7 @@ rules = {
   phoneNum: [{ validator: this.validatePhone, trigger: 'blur' }],
 };
 
-sumbit(formName: string, e: any) {
+sumbit(formName: string) {
   (this.$refs[formName] as HTMLFormElement).validate((vail: boolean) => {
     if (vail) {
       const sumbitForm = {
@@ -161,7 +161,7 @@ sumbit(formName: string, e: any) {
           setTimeout(() => {
             this.back();
           }, 100);
-          e.preventDefault();
+          // e.preventDefault();
         });
     } else {
       this.$alert('提交失败，请检查信息是否正确！', 'Error!', {
@@ -170,7 +170,7 @@ sumbit(formName: string, e: any) {
       });
     }
   });
-  e.preventDefault();
+  // e.preventDefault();
 }
 
 reset(formName: string) {

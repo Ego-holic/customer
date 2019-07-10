@@ -23,6 +23,11 @@ export default new Router({
       component: () => import('@/views/users/UserInfoEdit.vue'),
     },
     // {
+    //   path: '/assignroles/:id',
+    //   name: 'assignroles',
+    //   component: () => import('@/views/users/UserAssginRole.vue'),
+    // }
+    // {
     //   path: '/changepassword',
     //   name:'changepassword/:id',
     //   component: () => import('@/views/users/UserChangePassword.vue')

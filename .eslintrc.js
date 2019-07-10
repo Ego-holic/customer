@@ -18,6 +18,7 @@ module.exports = {
     'no-param-reassign': 1,
     'class-methods-use-this': 0,
     'max-len': 1,
+    'no-tabs': 'off',
   },
   parserOptions: {
     parser: 'typescript-eslint-parser',

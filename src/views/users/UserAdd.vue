@@ -7,8 +7,8 @@
         ref="registerForm"
         :rules="rules"
         label-width="140px">
-            <el-form-item label="请输入用户名：" prop="name">
-                <el-input v-model="registerForm.name"></el-input>
+            <el-form-item label="请输入用户名：" prop="userName">
+                <el-input v-model="registerForm.userName"></el-input>
             </el-form-item>
             <el-form-item label="请输入密码：" prop="password">
                 <el-input type="password" v-model="registerForm.password"></el-input>
@@ -19,8 +19,8 @@
             <el-form-item label="请输入邮箱地址：" prop="email">
                 <el-input type="email" v-model="registerForm.email"></el-input>
             </el-form-item>
-            <el-form-item label="请输入电话号码：" prop="phoneNum">
-                <el-input type="tel" maxlength="11" v-model="registerForm.phoneNum"></el-input>
+            <el-form-item label="请输入电话号码：" prop="phoneNumber">
+                <el-input type="tel" maxlength="11" v-model="registerForm.phoneNumber"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="sumbit('registerForm')">提交</el-button>
@@ -127,29 +127,29 @@ export default class UserAdd extends Vue {
   }
 
 registerForm = {
-  name: '',
+  userName: '',
   password: '',
   checkPasswd: '',
   email: '',
-  phoneNum: '',
+  phoneNumber: '',
 };
 
 rules = {
-  name: [{ required: true, validator: this.validateName, trigger: 'blur' }],
+  userName: [{ required: true, validator: this.validateName, trigger: 'blur' }],
   password: [{ required: true, validator: this.validatePasswd, trigger: 'blur' }],
   checkPasswd: [{ required: true, validator: this.validateCheckPasswd, trigger: 'blur' }],
   email: [{ required: true, validator: this.validateEmail, trigger: 'blur' }],
-  phoneNum: [{ validator: this.validatePhone, trigger: 'blur' }],
+  phoneNumber: [{ validator: this.validatePhone, trigger: 'blur' }],
 };
 
 sumbit(formName: string) {
   (this.$refs[formName] as HTMLFormElement).validate((vail: boolean) => {
     if (vail) {
       const sumbitForm = {
-        name: this.registerForm.name,
+        userName: this.registerForm.userName,
         password: this.registerForm.password,
         email: this.registerForm.email,
-        phoneNum: this.registerForm.phoneNum,
+        phoneNumber: this.registerForm.phoneNumber,
       };
       axios.post('http://localhost:3000/users', sumbitForm)
         .then((response) => {

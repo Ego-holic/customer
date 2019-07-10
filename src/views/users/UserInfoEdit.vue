@@ -15,8 +15,11 @@
             <el-form-item label="新的邮箱地址：" prop="email">
                 <el-input v-model="userData.email" placeholder="请输入邮箱地址"></el-input>
             </el-form-item>
-            <el-form-item label="新的手机号码：" prop="phoneNum">
-                <el-input v-model="userData.phoneNum" maxlength="11" placeholder="请输入手机号码"></el-input>
+            <el-form-item label="新的手机号码：" prop="phoneNumber">
+                <el-input
+                  v-model="userData.phoneNumber"
+                  maxlength="11"
+                  placeholder="请输入手机号码"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="success" @click="submitChange('userData')">提交修改</el-button>
@@ -26,7 +29,10 @@
         </el-row>
         </div>
       </el-card>
-      <UserChangePasswd :dialogVisible="dialogVisible" :password = "originPassword" :id = "id"/>
+      <UserChangePasswd
+        :dialogVisible= "dialogVisible"
+        :password = "originPassword"
+        :id = "id"/>
     </div>
 </template>
 
@@ -49,7 +55,7 @@ export default class UserInfoEdit extends Vue {
     id: '',
     password: '',
     email: '',
-    phoneNum: '',
+    phoneNumber: '',
   };
 
   validateEmail(rule: any, value: string, callback: any) {
@@ -78,7 +84,7 @@ export default class UserInfoEdit extends Vue {
 
   rules = {
     email: [{ required: true, validator: this.validateEmail, trigger: 'blur' }],
-    phoneNum: [{ required: true, validator: this.validatePhone, trigger: 'blur' }],
+    phoneNumber: [{ required: true, validator: this.validatePhone, trigger: 'blur' }],
   };
 
   getUserById(val: string) {
@@ -88,7 +94,7 @@ export default class UserInfoEdit extends Vue {
         id: response.data[0].id,
         password: response.data[0].password,
         email: response.data[0].email,
-        phoneNum: response.data[0].phoneNum,
+        phoneNumber: response.data[0].phoneNumber,
       };
     });
   }
@@ -97,7 +103,7 @@ export default class UserInfoEdit extends Vue {
   //       // id: this.userData.id,
   //       // password: this.userData.password,
   //       email: this.userData.email,
-  //       phoneNum: this.userData.phoneNum,
+  //       phoneNumber: this.userData.phoneNumber,
   //     };
 
   submitChange(formName: string) {
@@ -106,13 +112,13 @@ export default class UserInfoEdit extends Vue {
       if (tmp) {
         const updateForm = {
           email: this.userData.email,
-          phoneNum: this.userData.phoneNum,
+          phoneNumber: this.userData.phoneNumber,
         };
         axios.patch(`http://localhost:3000/users/${this.$route.params.id}`, updateForm)
           .then((response) => {
             this.$router.push({ path: '/users' });
           });
-      } else if (!this.userData.email || !this.userData.phoneNum) {
+      } else if (!this.userData.email || !this.userData.phoneNumber) {
         this.$alert('请输入信息！');
       } else {
         this.$alert('请输入正确的信息！');

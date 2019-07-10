@@ -13,7 +13,7 @@
                 width="150">
             </el-table-column>
             <el-table-column
-                prop="name"
+                prop="userName"
                 label="用户名"
                 width="200">
             </el-table-column>
@@ -23,7 +23,7 @@
                 width="250">
             </el-table-column>
             <el-table-column
-                prop="phoneNum"
+                prop="phoneNumber"
                 label="电话"
                 width="250">
             </el-table-column>
@@ -32,7 +32,7 @@
                 <el-button
                     size="mini"
                     type="primary"
-                    @click="assignRoles()">分配角色</el-button>
+                    @click="assignRoles(scope.row.id)">分配角色</el-button>
                 <el-button
                     size="mini"
                     type="success"
@@ -64,13 +64,19 @@
               </el-col>
           </el-row>
       </div>
+      <UserAssginRole
+        :visibleAssginRole= "visibleAssginRole"
+        :id= "id"/>
   </div>
 </template>
 <script lang='ts'>
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Emit } from 'vue-property-decorator';
 import axios from 'axios';
+import UserAssginRole from '@/components/UserAssginRole.vue';
 
-@Component
+@Component({
+  components: { UserAssginRole },
+})
 export default class UserForm extends Vue {
     userData = [];
 
@@ -82,6 +88,10 @@ export default class UserForm extends Vue {
 
     pageSize = 10;
 
+    visibleAssginRole: boolean = false;
+
+    id: string = '';
+
     addUser() {
       this.$router.push({ path: '/useradd' });
     }
@@ -89,6 +99,12 @@ export default class UserForm extends Vue {
     editUser(val :string) {
       // console.log(this.$router)
       this.$router.push({ name: 'useredit', params: { id: val } });
+    }
+
+    assignRoles(val: string) {
+      // this.$router.push({name: 'assignroles', params:{id: val}});
+      this.visibleAssginRole = true;
+      this.id = val;
     }
 
     userList() {

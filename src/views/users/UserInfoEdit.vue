@@ -1,13 +1,9 @@
 <template>
     <div class="edit-wrapper">
-      <el-card shadow="hover">
-        <h1>修改用户信息</h1>
+      <el-card shadow="hover" class="card">
+        <div class="title"><h1>修改用户信息</h1></div>
         <el-row>
-          <el-col :span="15"><p>当前用户的ID：{{ userData.id }}</p></el-col>
-          <el-col :span="6">
-            <el-button
-              size="small"
-              @click = "changePasswd">修改密码</el-button></el-col>
+          <el-col><p>当前用户的ID：{{ userData.id }}</p></el-col>
         </el-row>
         <div class="form">
         <el-row>
@@ -22,6 +18,9 @@
                   placeholder="请输入手机号码"></el-input>
             </el-form-item>
             <el-form-item>
+              <el-button
+              size="small"
+              @click = "changePasswd">修改密码</el-button>
               <el-button type="success" @click="submitChange('userData')">提交修改</el-button>
               <el-button type="default" @click="cancel()">取消</el-button>
             </el-form-item>
@@ -40,6 +39,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import axios from 'axios';
 import UserChangePasswd from './components/UserChangePasswd.vue';
+axios.defaults.baseURL = '/test'
 
 @Component({
   components: { UserChangePasswd },
@@ -88,13 +88,13 @@ export default class UserInfoEdit extends Vue {
   }
 
   public getUserById(val: string) {
-    axios.get(`/user?id=${val}`).then((response) => {
-      // console.log(response.data[0].password)
+    axios.get(`/users/${val}`).then((response) => {
+      console.log(response)
       this.userData = {
-        id: response.data[0].id,
-        password: response.data[0].password,
-        email: response.data[0].email,
-        phoneNumber: response.data[0].phoneNumber,
+        id: response.data.id,
+        password: response.data.password,
+        email: response.data.email,
+        phoneNumber: response.data.phoneNumber,
       };
     });
   }
@@ -114,7 +114,7 @@ export default class UserInfoEdit extends Vue {
           email: this.userData.email,
           phoneNumber: this.userData.phoneNumber,
         };
-        axios.patch(`/user/${this.$route.params.id}`, updateForm)
+        axios.put(`/users/${this.$route.params.id}`, updateForm)
           .then((response) => {
             this.$router.push({ path: '/users' });
           });
@@ -139,6 +139,7 @@ export default class UserInfoEdit extends Vue {
 
   public created() {
     this.getUserById(this.$route.params.id);
+    console.log(this.$route.params.id)
   }
 }
 </script>
@@ -149,11 +150,15 @@ export default class UserInfoEdit extends Vue {
   justify-content center
   margin-top 150px
 }
-
+.card{
+  height 400px
+  width  500px
+}
 h1{
   text-align center
+  font-size 25px
 }
-p{
-  text-align center
+.title{
+  padding-bottom 30px
 }
 </style>

@@ -1,6 +1,10 @@
 <template>
     <div class="assgin_wrapper">
         <el-dialog title="分配角色" :visible.sync="visibleAssginRole">
+        <el-input
+        placeholder="请输入APP的ID"
+        v-model= "appId"></el-input>
+        <el-button @click="getRolesByAppId">搜索</el-button>
             <div class="header">
                 <span>已经分配的角色</span>
                 <el-tag
@@ -11,7 +15,7 @@
             </div>
 			<hr />
             <div class="footer">
-                <span>未分配的角色</span>
+                <span>未分配的角色：</span>
                 <el-tag
 				v-for="(item, index) in rolesArr"
 				:key="index"
@@ -26,17 +30,16 @@ import axios from 'axios';
 import {
   Prop, Component, Vue, Watch,
 } from 'vue-property-decorator';
+axios.defaults.baseURL = '/test'
 
 @Component
 export default class UserAssginRole extends Vue {
 @Prop({ type: Boolean, default: false }) public visibleAssginRole: boolean;
 
 @Prop({ type: String, default: '' }) public id: string;
-
+  appId = '';
 // 未分配的角色数组
-    public rolesArr = [{
-    name: '',
-  }];
+    public rolesArr = [];
 
   public usersRoles = []; // 已分配的角色数组
 
@@ -52,13 +55,15 @@ export default class UserAssginRole extends Vue {
 @Watch('id')
 public watchIdChange(val: string) {
   this.getUserRoles(val);
-  this.getRoles();
+  // this.getRoles();
   // console.log(val);
 }
 
-  public getRoles() {
-    axios.get('/role')
+  public getRolesByAppId() {
+    // console.log(this.appId)
+    axios.get(`/roles?applicationId=${this.appId}`)
       .then((response) => {
+        console.log(response)
         const rolesData = response.data;
         const lengthArr1 = rolesData.length;
          const lengthArr2 = this.usersRoles.length;
@@ -81,7 +86,7 @@ public watchIdChange(val: string) {
 
   // 通过id查询用户的所有数据
   public getUserRoles(val: string) {
-    axios.get(`/user/${val}`)
+    axios.get(`/users/${val}`)
       .then((response) => {
       this.totalData = response.data;
       this.usersRoles = response.data.roleNames;
@@ -90,10 +95,11 @@ public watchIdChange(val: string) {
 
   public addTag(index: number) {
     const val = this.rolesArr[index];
+    console.log(val)
     this.usersRoles.push(val);
     this.rolesArr.splice(index, 1);
     this.totalData.roleNames = this.usersRoles;
-    axios.put(`/user/${this.id}`, this.totalData)
+    axios.put(`/users/${this.id}/roles/${val}`)
       .then((response) => {});
   }
 
@@ -101,7 +107,7 @@ public watchIdChange(val: string) {
     const val = this.usersRoles[index];
     this.rolesArr.push(val);
     this.usersRoles.splice(index, 1);
-    axios.put(`/user/${this.id}`, this.totalData)
+    axios.delete(`/users/${this.id}/roles/${val}`)
     .then((response) => {});
   }
 }

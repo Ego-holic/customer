@@ -34,6 +34,7 @@
 <script lang='ts'>
 import { Vue, Component } from 'vue-property-decorator';
 import axios from 'axios';
+axios.defaults.baseURL = '/test'
 
 @Component
 export default class UserAdd extends Vue {
@@ -44,6 +45,7 @@ public registerForm = {
   checkPasswd: '',
   email: '',
   phoneNumber: '',
+  roleName: ''
 };
 
 public rules = {
@@ -149,11 +151,12 @@ public sumbit(formName: string) {
         userName: this.registerForm.userName,
         password: this.registerForm.password,
         email: this.registerForm.email,
-        phoneNumber: this.registerForm.phoneNumber,
+        // phoneNumber: this.registerForm.phoneNumber,
+        roleName: 'admin'
       };
       axios.post('/users', sumbitForm)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           this.$message({
             type: 'success',
             message: '新增用户成功！',
@@ -194,6 +197,7 @@ public mounted() {
 .wrapper{
   display flex
   justify-content center
+  padding-top 20px
 }
 h2{
   display flex

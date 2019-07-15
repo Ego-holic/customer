@@ -11,25 +11,25 @@
               label-width="150px">
                 <el-form-item
                   label="请输入原密码："
-                  prop="originPasswd">
+                  prop="oldPassword">
                     <el-input
-                      v-model="passwdForm.originPasswd"
+                      v-model="passwdForm.oldPassword"
                       type="password"
                       minlength="6"></el-input>
                 </el-form-item>
                 <el-form-item
                   label="请输入新密码："
-                  prop="newPasswd">
+                  prop="newPassword">
                     <el-input
-                      v-model="passwdForm.newPasswd"
+                      v-model="passwdForm.newPassword"
                       type="password"
                       minlength="6"></el-input>
                 </el-form-item>
                 <el-form-item
                   label="请再次输入密码："
-                  prop="checkPasswd">
+                  prop="confirmPassword">
                     <el-input
-                      v-model="passwdForm.checkPasswd"
+                      v-model="passwdForm.confirmPasswd"
                       type="password"></el-input>
                 </el-form-item>
             </el-form>
@@ -44,6 +44,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import axios from 'axios';
+axios.defaults.baseURL = '/test'
 @Component
 export default class UserChangePasswd extends Vue {
     @Prop({ type: String, default: '' }) public password: string;
@@ -53,28 +54,28 @@ export default class UserChangePasswd extends Vue {
     @Prop({ type: String, default: '' }) public id: string;
 
     public passwdForm = {
-      originPasswd: '',
-      newPasswd: '',
-      checkPasswd: '',
+      oldPassword: '',
+      newPassword: '',
+      confirmPassword: '',
     };
 
     public rules = {
-      originPasswd: [{ required: true, validator: this.vaildataOriginPasswd, trigger: 'blur' }],
-      newPasswd: [{ required: true, message: '密码不能为空！', trigger: 'blur' }],
-      checkPasswd: [{ required: true, validator: this.vaildataCheckPasswd, trigger: 'blur' }],
+      oldPassword: [{ required: true, message: '请输入原密码！', trigger: 'blur' }],
+      newPassword: [{ required: true, message: '密码不能为空！', trigger: 'blur' }],
+      confirmPassword: [{ required: true, validator: this.vaildataCheckPasswd, trigger: 'blur' }],
     };
 
-    public vaildataOriginPasswd(rule: any, value: string, callback: any) {
-      // console.log(this.password);
-      if (value !== this.password) {
-        callback(new Error('密码不正确！'));
-      } else {
-        callback();
-      }
-    }
+    // public vaildataOriginPasswd(rule: any, value: string, callback: any) {
+    //   // console.log(this.password);
+    //   if (value !== this.password) {
+    //     callback(new Error('密码不正确！'));
+    //   } else {
+    //     callback();
+    //   }
+    // }
 
     public vaildataCheckPasswd(rule: any, value: string, callback: any) {
-      const tmp = this.passwdForm.newPasswd;
+      const tmp = this.passwdForm.confirmPassword;
       if (value !== tmp) {
         callback(new Error('两次输入的密码不一致！'));
       }
@@ -85,11 +86,14 @@ export default class UserChangePasswd extends Vue {
       (this.$refs[formName] as HTMLFormElement).validate((tmp: boolean) => {
         if (tmp) {
           const updateForm = {
-            password: this.passwdForm.newPasswd,
+            // password: this.passwdForm.newPasswd,
+            oldPassword: this.passwdForm.oldPassword,
+            newPassword: this.passwdForm.newPassword,
+            confirmPassword: this.passwdForm.confirmPassword,
           };
-          axios.patch(`/user/${this.id}`, updateForm)
+          axios.put(`/users/${this.id}/pwd/change`, updateForm)
             .then((response) => {
-              this.$router.push({ path: '/useredit/+id' });
+              this.$router.push({ path: `/edit/${this.id}` });
               this.dialogVisible = false;
             });
         } else {

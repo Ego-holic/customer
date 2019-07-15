@@ -2,19 +2,19 @@
   <div class="label">
       <div class="table_wrapper">
           <el-table
-            :data="userData"
+            :data="totalData"
             border
             size="medium"
-            :row-key="userData.id">
+            :row-key="totalData.id">
             <el-table-column
                 prop="id"
                 label="ID"
-                width="150">
+                width="200">
             </el-table-column>
             <el-table-column
                 prop="userName"
                 label="用户名"
-                width="200">
+                width="150">
             </el-table-column>
             <el-table-column
                 prop="email"
@@ -107,7 +107,6 @@ export default class UserForm extends Vue {
     }
 
     public userList() {
-      console.log('获取列表')
       axios.get('/users',{
         params: {
           page:1,
@@ -116,28 +115,28 @@ export default class UserForm extends Vue {
       })
         .then((response) => {
           this.getUsersData(response);
-          console.log(response);
+          // console.log(response);
         });
     }
 
     public getUsersData(response: any) {
-      const request = response.data;
+      const request = response.data.items;
       this.totalData = request;
-      const argCurrent = this.currentPage;
-      const argSize = this.pageSize;
-      this.userData = request.slice((argCurrent - 1) * argSize, argCurrent * argSize);
-      this.total = request.length;
+      // const argCurrent = this.currentPage;
+      // const argSize = this.pageSize;
+      // this.userData = request.slice((argCurrent - 1) * argSize, argCurrent * argSize);
+      this.total = response.data.count;
     }
 
     public handleCurrentChange(val: number) {
       this.currentPage = val;
-      const argCurrent = this.currentPage;
-      const argSize = this.pageSize;
-      this.userData = this.totalData.slice((argCurrent - 1) * argSize, argCurrent * argSize);
+      // const argCurrent = this.currentPage;
+      // const argSize = this.pageSize;
+      // this.userData = this.totalData.slice((argCurrent - 1) * argSize, argCurrent * argSize);
     }
 
     public delUserInfo(val: string) {
-      axios.delete(`/user/${val}`).then(
+      axios.delete(`/users/${val}`).then(
         (response) => {
           this.$message({
             type: 'success',

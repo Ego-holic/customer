@@ -8,10 +8,11 @@
           placeholder="请输入APP的ID"
           v-model= "appId"></el-input>
               </el-col>
-              <el-col :span="3">
+              <el-col :span="3" offset="1">
                 <el-button
           icon="el-icon-search"
           type="primary"
+          size="small"
           @click="getRolesByAppId">搜索</el-button>
               </el-col>
             </el-row>

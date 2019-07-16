@@ -140,6 +140,8 @@ export default class UserForm extends Vue {
             type: 'success',
             message: '删除成功!',
           });
+          this.userList();
+          // this.$router.push({path: '/users'});
         },
       );
     }
@@ -151,7 +153,8 @@ export default class UserForm extends Vue {
         type: 'warning',
       }).then(() => {
         this.delUserInfo(val);
-        window.location.reload();
+        // this.userList();
+        // this.$router.push({path: '/users'})
       }).catch(() => {
         this.$message({
           type: 'info',

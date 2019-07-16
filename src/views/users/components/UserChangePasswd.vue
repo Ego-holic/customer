@@ -44,7 +44,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import axios from 'axios';
-axios.defaults.baseURL = '/test'
+axios.defaults.baseURL = '/test';
 @Component
 export default class UserChangePasswd extends Vue {
     @Prop({ type: String, default: '' }) public password: string;

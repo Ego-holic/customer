@@ -1,5 +1,5 @@
 <template>
-  <div class="label">
+  <el-main class="label">
       <div class="table_wrapper">
           <el-table
             :data="totalData"
@@ -24,7 +24,7 @@
             <el-table-column
                 prop="phoneNumber"
                 label="电话"
-                width="250">
+                width="230">
             </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
@@ -66,13 +66,13 @@
       <UserAssginRole
         :visibleAssginRole= "visibleAssginRole"
         :id= "id"/>
-  </div>
+  </el-main>
 </template>
 <script lang='ts'>
-import { Vue, Component, Emit } from 'vue-property-decorator';
+import { Vue, Component, Emit, Watch } from 'vue-property-decorator';
 import axios from 'axios';
 import UserAssginRole from './components/UserAssginRole.vue';
-axios.defaults.baseURL = '/test'
+axios.defaults.baseURL = '/test';
 @Component({
   components: { UserAssginRole },
 })
@@ -90,9 +90,13 @@ export default class UserForm extends Vue {
     public visibleAssginRole: boolean = false;
 
     public id: string = '';
+  @Watch('currentPage')
+    public watchCurrentPageChange() {
+      this.userList();
+    }
 
     public addUser() {
-      this.$router.push({ path:'/users/add' });
+      this.$router.push({ path: '/users/add' });
     }
 
     public editUser(val: string) {
@@ -107,15 +111,9 @@ export default class UserForm extends Vue {
     }
 
     public userList() {
-      axios.get('/users',{
-        params: {
-          page:1,
-          size:10
-        }
-      })
+      axios.get(`/users?page=${this.currentPage}&size=${this.pageSize}`)
         .then((response) => {
           this.getUsersData(response);
-          // console.log(response);
         });
     }
 

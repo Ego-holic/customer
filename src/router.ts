@@ -39,7 +39,7 @@ export default new Router({
       path: '/users/add',
       name: 'useradd',
       component: () => import('@/views/users/UserAdd.vue'),
-      props: true
+      props: true,
     },
   ],
 });

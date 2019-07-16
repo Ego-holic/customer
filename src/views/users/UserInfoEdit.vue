@@ -39,7 +39,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import axios from 'axios';
 import UserChangePasswd from './components/UserChangePasswd.vue';
-axios.defaults.baseURL = '/test'
+axios.defaults.baseURL = '/test';
 
 @Component({
   components: { UserChangePasswd },
@@ -89,7 +89,6 @@ export default class UserInfoEdit extends Vue {
 
   public getUserById(val: string) {
     axios.get(`/users/${val}`).then((response) => {
-      console.log(response)
       this.userData = {
         id: response.data.id,
         password: response.data.password,
@@ -134,12 +133,10 @@ export default class UserInfoEdit extends Vue {
     this.dialogVisible = true;
     this.originPassword = this.userData.password;
     this.id = this.$route.params.id;
-    // return this.dialogVisible, this.password;
   }
 
   public created() {
     this.getUserById(this.$route.params.id);
-    console.log(this.$route.params.id)
   }
 }
 </script>

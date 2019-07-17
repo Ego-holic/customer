@@ -18,7 +18,7 @@
       :rules="rules"
     >
       <el-form-item label="名称" prop="name">
-        <el-input v-model="form.name" :disabled="nameDisabled"></el-input>
+        <el-input v-model="form.name" :disabled="nameDisabled" maxlength="100"></el-input>
       </el-form-item>
       <el-form-item>
         <div slot="label">
@@ -44,7 +44,7 @@
       <el-form-item label="描述">
         <el-input
           type="textarea"
-          :autosize="{ minRows: 5, maxRows: 5 }"
+          :autosize="{ minRows: 2, maxRows: 5 }"
           v-model="form.description"
           resize="none"
         >

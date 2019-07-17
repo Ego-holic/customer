@@ -159,7 +159,7 @@ export default class Application extends Vue {
 <style lang="scss" scoped >
 .application_item_wrapper {
   width: 32%;
-  height: 510px;
+  height: 600px;
   background: #fff !important;
   margin-top: 20px;
 }

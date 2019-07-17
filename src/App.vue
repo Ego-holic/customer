@@ -15,7 +15,7 @@
           <el-col :span="2"><el-menu-item ><el-link href="#/applications">APP管理</el-link></el-menu-item></el-col>
           <el-col :span="2"><el-menu-item ><el-link href="#/users">用户列表</el-link></el-menu-item></el-col>
           <el-col :span="2"><el-menu-item ><el-link>关于我们</el-link></el-menu-item></el-col>
-          <el-col :span="2" :offset="8"><el-menu-item ><el-link>登录</el-link></el-menu-item></el-col>    
+          <el-col :span="2" :offset=8><el-menu-item ><el-link>登录</el-link></el-menu-item></el-col>    
           </el-row>      
         </el-menu>
       </el-header>

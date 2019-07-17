@@ -73,7 +73,6 @@ import { Vue, Component, Emit, Watch } from 'vue-property-decorator';
 import axios from 'axios';
 import UserAssginRole from './components/UserAssginRole.vue';
 axios.defaults.baseURL = BASE_URL.identify_api;
-// console.log(BASE_URL)
 @Component({
   components: { UserAssginRole },
 })

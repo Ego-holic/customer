@@ -8,7 +8,8 @@
           placeholder="请输入APP的ID"
           v-model= "appId"></el-input>
               </el-col>
-              <el-col :span="3" offset="1">
+              <el-col :span="3"
+              :offset="1">
                 <el-button
           icon="el-icon-search"
           type="primary"
@@ -84,15 +85,14 @@ public watchIdChange(val: string) {
         for (let i = 0; i < lengthArr1; i += 1) {
           tmpArr.push(rolesData[i].name);
         }
-      // console.log(tmpArr)
         for (let j = 0; j < lengthArr2; j += 1) {
-      index = tmpArr.findIndex((val: string, index: number) => {
-      return Object.is(this.usersRoles[j], val);
-      });
-      tmpArr.splice(index, 1);
-      }
+          index = tmpArr.findIndex((val: string, index: number) => {
+            return Object.is(this.usersRoles[j], val);
+          });
+        tmpArr.splice(index, 1);
+        }
         this.rolesArr = tmpArr;
-        console.log(this.rolesArr);
+        console.log(tmpArr);
         });
     }
 

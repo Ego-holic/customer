@@ -42,7 +42,7 @@ import axios from 'axios';
 import {
   Prop, Component, Vue, Watch,
 } from 'vue-property-decorator';
-axios.defaults.baseURL = '/test';
+axios.defaults.baseURL = BASE_URL.identify_api;
 
 @Component
 export default class UserAssginRole extends Vue {

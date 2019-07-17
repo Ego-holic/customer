@@ -39,7 +39,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import axios from 'axios';
 import UserChangePasswd from './components/UserChangePasswd.vue';
-axios.defaults.baseURL = '/test';
+axios.defaults.baseURL = BASE_URL.identify_api;
 
 @Component({
   components: { UserChangePasswd },

@@ -34,7 +34,7 @@
 <script lang='ts'>
 import { Vue, Component } from 'vue-property-decorator';
 import axios from 'axios';
-axios.defaults.baseURL = '/test';
+axios.defaults.baseURL = BASE_URL.identify_api;
 
 @Component
 export default class UserAdd extends Vue {

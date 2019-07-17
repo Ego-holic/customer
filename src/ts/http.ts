@@ -4,9 +4,9 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
 
-import { BASE_URL } from '@/ts/config';
+// import { BASE_URL } from '@/ts/config';
 
-axios.defaults.baseURL = BASE_URL;
+axios.defaults.baseURL = BASE_URL.identify_api;
 
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers.post['Content-Type'] = 'application/json';

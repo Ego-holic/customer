@@ -1,6 +1,6 @@
 <template>
     <div class="assgin_wrapper">
-        <el-dialog title="分配角色" :visible.sync="visibleAssginRole">
+        <el-dialog title="分配角色" :visible.sync="visibleAssginRole" @close="closeDialog">
           <div class="search">
             <el-row>
               <el-col :span="15">
@@ -122,6 +122,13 @@ public watchIdChange(val: string) {
     axios.delete(`/users/${this.id}/roles/${val}?roleName=${val}`)
     .then((response) => {});
   }
+
+  closeDialog(){
+    this.$emit("listenId",this.id);
+  }
+  // destroyed(){
+  //   this.visibleAssginRole = false;
+  // }
 }
 </script>
 <style lang="stylus" scoped>

@@ -6,6 +6,7 @@ import { OperateTypesE } from '@/ts/enums';
 // T: 操作的数据的数据格式
 @Component
 export default class OperateDialogMixin<T> extends Vue {
+  [x: string]: any;
   get title() {
     let title = '';
     switch (this.operateType) {
@@ -32,7 +33,7 @@ export default class OperateDialogMixin<T> extends Vue {
   public form = { ...this.initForm };
 
   public commonSureOperateSuccessCallback: any = { // 公用的操作成功后的方法
-    [OperateTypesE.Create](...rest) {
+    [OperateTypesE.Create](...rest: any) {
       this.$message({
         message: '添加成功',
         type: 'success',
@@ -41,7 +42,7 @@ export default class OperateDialogMixin<T> extends Vue {
       this.operateSuccess({ ...this.form });
       this.sureOperateSuccessCallback[OperateTypesE.Create](rest);
     },
-    [OperateTypesE.Update](...rest) {
+    [OperateTypesE.Update](...rest: any) {
       console.log(this);
       this.$message({
         message: '修改成功',

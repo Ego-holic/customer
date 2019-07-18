@@ -65,6 +65,7 @@
       </div>
       <UserAssginRole
         :visibleAssginRole= "visibleAssginRole"
+        @listenId= "listenIdChange"
         :id= "id"/>
   </el-main>
 </template>
@@ -94,6 +95,11 @@ export default class UserForm extends Vue {
     public watchCurrentPageChange() {
       this.userList();
     }
+  // @Watch('id')
+  listenIdChange(){
+    this.visibleAssginRole = false;
+    this.id = '';
+  }
 
     public addUser() {
       this.$router.push({ path: '/users/add' });
